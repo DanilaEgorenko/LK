@@ -35,7 +35,6 @@ import {
     VacationSchedule,
     VisaCertificatePage,
     WorkOnTermsOfExternalConcurrencyPage,
-    WorkTransfer,
 } from './pages'
 
 import { isProduction } from '@consts'
@@ -113,7 +112,6 @@ const ApplicationRedirect = () => PageIsNotReady({ oldVersionUrl: '/sprav' })
 
 export const teachersPrivateRoutes: () => IRoutes = () => ({
     ...generalRoutes,
-
     applications: {
         id: 'applications',
         title: 'Цифровые сервисы',

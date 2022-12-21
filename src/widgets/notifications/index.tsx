@@ -37,10 +37,10 @@ const PersonalNotifications = styled.div`
 
 interface Props {
     title: string
-    type: 'notifications' | 'docs'
+    docsOnly?: boolean
 }
 
-const NotificationsPage = ({ title, type }: Props) => {
+const NotificationsPage = ({ title, docsOnly }: Props) => {
     const { data: notifications, error } = personalNotificationModel.selectors.usePersonalNotifications()
     const [foundNotification, setFoundNotification] = useState<Notifications>()
     const [searchValue, setSearchValue] = useState<string>('')
@@ -64,7 +64,7 @@ const NotificationsPage = ({ title, type }: Props) => {
     return (
         <Wrapper
             load={() => {
-                personalNotificationModel.effects.setNotificationsType(type)
+                personalNotificationModel.effects.setNotificationsType(docsOnly ? 'docs' : 'notifications')
                 personalNotificationModel.effects.getPersonalNotificationsFx()
             }}
             error={error}
@@ -84,7 +84,7 @@ const NotificationsPage = ({ title, type }: Props) => {
                         />
                         <Select items={items} selected={selected} setSelected={setSelected} />
                     </ElementsControlNotification>
-                    {type === 'docs' && foundNotification?.docs ? (
+                    {docsOnly && foundNotification?.docs ? (
                         <ListNotification listNotification={foundNotification?.docs} typeList="docs" />
                     ) : (
                         <SliderPage
@@ -114,6 +114,13 @@ const NotificationsPage = ({ title, type }: Props) => {
                                             listNotification={foundNotification?.businesstrip}
                                             typeList="businesstrip"
                                         />
+                                    ),
+                                },
+                                {
+                                    title: '',
+                                    condition: !docsOnly,
+                                    content: foundNotification?.docs && (
+                                        <ListNotification listNotification={foundNotification?.docs} typeList="docs" />
                                     ),
                                 },
                             ]}
